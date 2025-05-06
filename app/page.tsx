@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <header className="border-b">
         <div className="container flex items-center justify-between h-16 mx-auto">
-          <h1 className="text-xl font-bold">NextAuth</h1>
+          <h1 className="text-xl font-bold">Cryptography</h1>
           <nav className="flex items-center gap-4">
             <Link href="/login">
               <Button variant="ghost">Login</Button>
