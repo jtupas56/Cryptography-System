@@ -6,7 +6,7 @@ export default function LoginPage() {
     <div className="flex flex-col min-h-screen">
       <div className="container flex items-center justify-between h-16 mx-auto">
         <Link href="/" className="text-xl font-bold">
-        Cryptography
+          Cryptography
         </Link>
       </div>
       <main className="flex-1 flex items-center justify-center py-12">

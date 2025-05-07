@@ -1,22 +1,11 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Navbar } from "@/app/components/navbar"
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="border-b">
-        <div className="container flex items-center justify-between h-16 mx-auto">
-          <h1 className="text-xl font-bold">Cryptography</h1>
-          <nav className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link href="/register">
-              <Button>Register</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
       <main className="flex-1">
         <section className="py-24 text-center">
           <div className="container px-4 mx-auto">
