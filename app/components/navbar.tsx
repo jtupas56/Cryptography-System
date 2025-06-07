@@ -14,7 +14,6 @@ export function Navbar({ session }: NavbarProps) {
   const pathname = usePathname()
 
   const isActive = (path: string) => pathname === path
-
   return (
     <header className="border-b">
       <div className="container flex items-center justify-between h-16 mx-auto">
