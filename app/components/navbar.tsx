@@ -13,6 +13,7 @@ interface NavbarProps {
 export function Navbar({ session }: NavbarProps) {
   const pathname = usePathname()
 
+
   const isActive = (path: string) => pathname === path
   return (
     <header className="border-b">
