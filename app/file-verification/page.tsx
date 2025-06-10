@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import HashRecordsTable from "@/components/hash-records-table"
 
 export default function FileVerificationPage() {
   const [fileName, setFileName] = useState("No File Chosen")
 
   return (
-    <div className="container mx-auto py-8">
-      <Card className="mx-auto max-w-3xl border border-gray-200 p-8 shadow-sm">
-        <h1 className="mb-8 text-3xl font-bold">File Verification</h1>
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold tracking-tight">File Verification</h1>
+        <p className="mt-2 text-gray-600">Verify the integrity of your files with SHA-256 hashing.</p>
+      </div>
 
+      <Card className="mb-8 border border-gray-200 p-6 shadow-sm">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button
@@ -44,7 +47,7 @@ export default function FileVerificationPage() {
 
         <div className="mb-8 space-y-2">
           <Label htmlFor="hash-value">Hash Value</Label>
-          <div id="hash-value" className="h-16 rounded-md border border-gray-300 bg-white p-4 text-black"></div>
+          <div id="hash-value" className="h-16 rounded-md border border-gray-200 bg-white p-4 text-black"></div>
         </div>
 
         <div className="flex justify-end">
@@ -53,37 +56,11 @@ export default function FileVerificationPage() {
       </Card>
 
       {/* Hash Records Section */}
-      <Card className="mx-auto mt-8 max-w-3xl border border-gray-200 p-8 shadow-sm">
+      <Card className="border border-gray-200 p-6 shadow-sm">
         <h2 className="mb-6 text-2xl font-bold">Hash Records</h2>
 
-        <div className="mb-6 rounded-md border border-gray-200">
-          <div className="overflow-hidden rounded-t-md">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-100">
-                  <TableHead className="w-1/4 font-bold">Time</TableHead>
-                  <TableHead className="w-1/3 font-bold">File</TableHead>
-                  <TableHead className="font-bold">Hash</TableHead>
-                </TableRow>
-              </TableHeader>
-            </Table>
-          </div>
-          <div className="max-h-60 overflow-y-auto">
-            <Table>
-              <TableBody>
-                {Array.from({ length: 15 }).map((_, index) => (
-                  <TableRow
-                    key={index}
-                    className={`border-t border-gray-200 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
-                  >
-                    <TableCell className="text-gray-500">2023-05-{String(index + 1).padStart(2, "0")} 14:30</TableCell>
-                    <TableCell className="text-gray-500">document-{index + 1}.pdf</TableCell>
-                    <TableCell className="text-gray-500">8a7b9c6d5e4f3g2h1i0j{index}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+        <div className="mb-6">
+          <HashRecordsTable />
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-4">
