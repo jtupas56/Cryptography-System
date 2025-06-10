@@ -10,6 +10,7 @@ interface NavbarProps {
   session?: Awaited<ReturnType<typeof getSession>>
 }
 
+
 export function Navbar({ session }: NavbarProps) {
   const pathname = usePathname()
 
