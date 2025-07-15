@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useToast } from "@/hooks/use-toast"
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 
 function bytesToHex(buffer: ArrayBuffer) {
   return Array.prototype.map
@@ -98,79 +99,96 @@ export default function FileVerificationPage() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full min-h-screen py-8">
-      <div className="w-full max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-10">File Verification</h1>
-        <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch mb-10">
-          <div className="flex-1 flex flex-col">
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle>Choose File</CardTitle>
-                <CardDescription>Select a file to verify</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4 justify-end flex-1">
-                {/* Move file input and button to the bottom */}
-                <div className="flex flex-col gap-4 mt-auto">
+    <>
+      <SignedOut>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="w-full max-w-sm">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold mb-2">Sign In Required</h1>
+              <p className="text-muted-foreground mb-4">Please sign in to access this feature.</p>
+              <SignInButton mode="modal">
+                <button className="w-full px-4 py-2 bg-black text-white rounded">Sign In</button>
+              </SignInButton>
+            </div>
+          </div>
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <div className="flex flex-col items-center w-full min-h-screen py-8">
+          <div className="w-full max-w-5xl mx-auto">
+            <h1 className="text-4xl font-bold text-center mb-10">File Verification</h1>
+            <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch mb-10">
+              <div className="flex-1 flex flex-col">
+                <Card className="h-full">
+                  <CardHeader>
+                    <CardTitle>Choose File</CardTitle>
+                    <CardDescription>Select a file to verify</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-4 justify-end flex-1">
+                    {/* Move file input and button to the bottom */}
+                    <div className="flex flex-col gap-4 mt-auto">
 
-                  <Input id="file-upload" type="file" onChange={handleChooseFile} ref={fileInputRef} />
-                  <Button onClick={handleHashFile} className="w-full">Hash File (SHA-256)</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="flex-1 flex flex-col">
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle>Hash Value</CardTitle>
-                <CardDescription>SHA-256 hash of the selected file</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-4">
-                <Input id="hash-value" value={hashValue} readOnly className="font-mono" />
-                <Button onClick={handleVerifyFile} className="w-full">Verify File</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-        <div className="mb-8">
-          <Card>
-            <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <CardTitle>Hash Records</CardTitle>
-              {/* Search input and button at top right */}
-              <div className="flex flex-row items-center gap-2 ml-auto">
-                <Label htmlFor="search-file" className="sr-only">Search File Name:</Label>
-                <Input
-                  id="search-file"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  className="max-w-xs flex-1"
-                  placeholder="Search File Name"
-                />
-                <Button onClick={handleSearch}>Search</Button>
+                      <Input id="file-upload" type="file" onChange={handleChooseFile} ref={fileInputRef} />
+                      <Button onClick={handleHashFile} className="w-full">Hash File (SHA-256)</Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Time</TableHead>
-                    <TableHead>File</TableHead>
-                    <TableHead>Hash</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {records.map((rec, idx) => (
-                    <TableRow key={idx} className={highlightedIndex === idx ? "bg-blue-100" : ""}>
-                      <TableCell>{rec.time}</TableCell>
-                      <TableCell>{rec.file}</TableCell>
-                      <TableCell className="font-mono text-xs break-all">{rec.hash}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+              <div className="flex-1 flex flex-col">
+                <Card className="h-full">
+                  <CardHeader>
+                    <CardTitle>Hash Value</CardTitle>
+                    <CardDescription>SHA-256 hash of the selected file</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-4">
+                    <Input id="hash-value" value={hashValue} readOnly className="font-mono" />
+                    <Button onClick={handleVerifyFile} className="w-full">Verify File</Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+            <div className="mb-8">
+              <Card>
+                <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <CardTitle>Hash Records</CardTitle>
+                  {/* Search input and button at top right */}
+                  <div className="flex flex-row items-center gap-2 ml-auto">
+                    <Label htmlFor="search-file" className="sr-only">Search File Name:</Label>
+                    <Input
+                      id="search-file"
+                      value={searchTerm}
+                      onChange={e => setSearchTerm(e.target.value)}
+                      className="max-w-xs flex-1"
+                      placeholder="Search File Name"
+                    />
+                    <Button onClick={handleSearch}>Search</Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>File</TableHead>
+                        <TableHead>Hash</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {records.map((rec, idx) => (
+                        <TableRow key={idx} className={highlightedIndex === idx ? "bg-blue-100" : ""}>
+                          <TableCell>{rec.time}</TableCell>
+                          <TableCell>{rec.file}</TableCell>
+                          <TableCell className="font-mono text-xs break-all">{rec.hash}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </SignedIn>
+    </>
   )
 } 

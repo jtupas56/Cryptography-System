@@ -52,12 +52,12 @@ export default function RootLayout({
               </Link>
               <div className="flex items-center gap-4 ml-4">
                 <SignedOut>
-                  <SignInButton>
+                  <SignInButton mode="modal">
                     <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium text-sm px-4 py-2 transition-colors">
                       Sign In
                     </button>
                   </SignInButton>
-                  <SignUpButton>
+                  <SignUpButton mode="modal">
                     <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm px-4 py-2 transition-colors">
                       Sign Up
                     </button>
