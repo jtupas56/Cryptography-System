@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -125,84 +124,98 @@ export default function EncryptDecryptPage() {
               <h1 className="text-2xl font-bold mb-2">Sign In Required</h1>
               <p className="text-muted-foreground mb-4">Please sign in to access this feature.</p>
               <SignInButton mode="modal">
-                <button className="w-full px-4 py-2 bg-black text-white rounded">Sign In</button>
+                <button className="w-full bg-black text-white font-semibold rounded-full px-8 py-4 text-lg transition-colors hover:bg-gray-800 focus:outline-none">Sign In</button>
               </SignInButton>
             </div>
           </div>
         </div>
       </SignedOut>
       <SignedIn>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4">Encryption & Decryption</h1>
-            <p className="text-muted-foreground">Secure your data with AES-CBC encryption</p>
-          </div>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] bg-[length:20px_20px] opacity-30"></div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Encryption Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  Encryption
-                </CardTitle>
-                <CardDescription>Enter text to encrypt and download the encrypted file</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="encrypt-input">Enter text to encrypt</Label>
-                  <Input
-                    id="encrypt-input"
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Type your message here..."
-                  />
-                </div>
+          <div className="container mx-auto px-4 py-12 relative z-10">
+            <div className="text-center mb-16">
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-black to-gray-800 bg-clip-text text-transparent mb-6">Encryption & Decryption</h1>
 
-                <Button onClick={handleEncrypt} className="w-full">
-                  Encrypt Text
-                </Button>
+            </div>
 
-                {downloadUrl && (
-                  <Button asChild variant="outline" className="w-full">
-                    <a href={downloadUrl} download="encrypted_data.json">
+            <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+              {/* Encryption Section */}
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+                  <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-lg flex items-center justify-center">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    Encryption
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 text-lg">Enter text to encrypt and download the encrypted file</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6 p-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="encrypt-input" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Enter text to encrypt</Label>
+                    <Input
+                      id="encrypt-input"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      placeholder="Type your message here..."
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+                  </div>
+
+                  <button onClick={handleEncrypt} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-2xl px-8 py-6 text-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/20 flex items-center justify-center gap-3">
+                    <Lock className="w-5 h-5" />
+                    Encrypt Text
+                  </button>
+
+                  {downloadUrl && (
+                    <a href={downloadUrl} download="encrypted_data.json" className="w-full bg-white text-black font-semibold rounded-2xl px-8 py-6 text-lg border-2 border-gray-300 transition-all duration-300 hover:bg-gray-50 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300/20 inline-flex items-center justify-center gap-3">
+                      <Download className="w-5 h-5" />
                       Download Encrypted File
                     </a>
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
 
-            {/* Decryption Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  Decryption
-                </CardTitle>
-                <CardDescription>Upload an encrypted file to decrypt its contents</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="decrypt-file">Choose encrypted file</Label>
-                  <Input
-                    id="decrypt-file"
-                    type="file"
-                    accept=".json"
-                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  />
-                </div>
-
-                <Button onClick={handleDecrypt} className="w-full">
-                  Decrypt File
-                </Button>
-
-                {decryptedText && (
-                  <div className="p-4 bg-muted rounded-lg">
-                    <Label>Decrypted Text:</Label>
-                    <p className="mt-2 font-mono text-sm break-all">{decryptedText}</p>
+              {/* Decryption Section */}
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]">
+                <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50 border-b border-orange-100">
+                  <CardTitle className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-600 to-red-600 text-white rounded-lg flex items-center justify-center">
+                      <Unlock className="w-4 h-4" />
+                    </div>
+                    Decryption
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 text-lg">Upload an encrypted file to decrypt its contents</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6 p-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="decrypt-file" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Choose encrypted file</Label>
+                    <Input
+                      id="decrypt-file"
+                      type="file"
+                      accept=".json"
+                      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
                   </div>
-                )}
-              </CardContent>
-            </Card>
+
+                  <button onClick={handleDecrypt} className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold rounded-2xl px-8 py-6 text-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500/20 flex items-center justify-center gap-3">
+                    <Unlock className="w-5 h-5" />
+                    Decrypt File
+                  </button>
+
+                  {decryptedText && (
+                    <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl shadow-inner">
+                      <Label className="text-green-800 font-bold text-lg">Decrypted Text:</Label>
+                      <p className="mt-3 font-mono text-sm break-all text-green-900 bg-white/50 p-4 rounded-xl border border-green-200">{decryptedText}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </SignedIn>
